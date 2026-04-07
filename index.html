@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Austin 4 Days</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --c1: #E8602A;
+  --c2: #0FA88F;
+  --c3: #E84470;
+  --c4: #3D2FA0;
+  --olive: #6B7C3F;
+  --dark: #1A1814;
+  --off: #FAF8F4;
+  --cream: #F2EFE8;
+  --gray: #7A7670;
+  --light: #E8E4DC;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--off); color:var(--dark); font-family:'DM Sans', sans-serif; font-weight:400; }
+
+/* HERO */
+.hero { background:var(--cream); padding:56px 48px 64px; border-bottom:2px solid var(--light); }
+.hero h1 { font-family:'DM Serif Display', serif; font-size:clamp(40px,6vw,80px); font-weight:400; line-height:.95; letter-spacing:-.03em; margin-bottom:10px; }
+.hero .sub { font-size:15px; font-weight:600; color:var(--olive); margin-bottom:28px; }
+.jump { display:flex; gap:10px; flex-wrap:wrap; }
+.jump a { background:white; border:1.5px solid var(--light); color:var(--dark); font-size:10px; font-weight:500; letter-spacing:.15em; text-transform:uppercase; padding:8px 16px; border-radius:40px; text-decoration:none; transition:all .15s; }
+.jump a:hover { background:var(--dark); color:white; }
+
+/* STICKY NAV */
+.nav { position:sticky; top:0; z-index:99; background:white; display:flex; border-bottom:2px solid var(--light); box-shadow:0 2px 8px rgba(0,0,0,.05); }
+.nav a { flex:1; padding:14px 8px; text-align:center; text-decoration:none; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all .15s; }
+.nav a:hover { border-bottom-color:currentColor; }
+.nav a .num { display:block; font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--gray); margin-bottom:2px; }
+.nav a .name { display:block; font-family:'DM Serif Display', serif; font-size:12px; font-weight:500; }
+.nav a[href="#thu"] { color:var(--c1); }
+.nav a[href="#fri"] { color:var(--c2); }
+.nav a[href="#sat"] { color:var(--c3); }
+.nav a[href="#sun"] { color:var(--c4); }
+
+/* LEGEND */
+.legend { background:var(--cream); padding:10px 48px; display:flex; gap:16px; border-bottom:1px solid var(--light); flex-wrap:wrap; }
+.tag { padding:2px 9px; border-radius:20px; font-size:8px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; }
+.tag-r { background:#D4EDDA; color:#1A6B35; }
+.tag-c { background:#FCE8D5; color:#A03B0A; }
+.tag-t { background:#FFF3CD; color:#856404; }
+
+/* DAY BLOCK */
+.day { padding:0 0 60px; border-bottom:2px solid var(--light); }
+
+.day-header { padding:40px 48px 32px; }
+.day-label { font-size:10px; font-weight:500; letter-spacing:.2em; text-transform:uppercase; margin-bottom:8px; }
+#thu .day-label { color:var(--c1); }
+#fri .day-label { color:var(--c2); }
+#sat .day-label { color:var(--c3); }
+#sun .day-label { color:var(--c4); }
+.day-header h2 { font-family:'DM Serif Display', serif; font-size:clamp(28px,4vw,48px); font-weight:400; line-height:1; letter-spacing:-.02em; }
+.day-header h2 em { font-style:italic; }
+#thu .day-header h2 em { color:var(--c1); }
+#fri .day-header h2 em { color:var(--c2); }
+#sat .day-header h2 em { color:var(--c3); }
+#sun .day-header h2 em { color:var(--c4); }
+
+/* TIMELINE */
+.timeline { padding:0 48px; position:relative; }
+.timeline::before { content:''; position:absolute; left:80px; top:0; bottom:0; width:2px; background:var(--light); }
+
+.trow { display:grid; grid-template-columns:80px 1fr; gap:0; position:relative; margin-bottom:0; }
+.trow + .trow { border-top:1px solid var(--light); }
+
+/* dot on timeline */
+.trow::before { content:''; position:absolute; left:72px; top:22px; width:16px; height:16px; border-radius:50%; background:white; border:2px solid var(--light); z-index:2; }
+#thu .trow::before { border-color:var(--c1); }
+#fri .trow::before { border-color:var(--c2); }
+#sat .trow::before { border-color:var(--c3); }
+#sun .trow::before { border-color:var(--c4); }
+
+.ttime { padding:18px 16px 18px 0; text-align:right; font-size:10px; font-weight:600; color:var(--gray); letter-spacing:.05em; line-height:1.4; padding-right:24px; }
+
+.tcontent { padding:16px 0 16px 28px; }
+
+.tname { font-family:'DM Serif Display', serif; font-size:16px; font-weight:400; margin-bottom:4px; }
+.taddr { font-size:11px; color:var(--gray); margin-bottom:6px; display:flex; align-items:flex-start; gap:4px; }
+.taddr svg { flex-shrink:0; margin-top:1px; }
+.tmeta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.tmap { font-size:9px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--dark); text-decoration:none; border-bottom:1px solid var(--light); padding-bottom:1px; }
+.tmap:hover { border-color:var(--dark); }
+.pax { display:inline-flex; align-items:flex-end; gap:1px; margin-left:4px; }
+.tnote { font-size:11px; color:var(--gray); font-style:italic; margin-top:4px; }
+
+/* option rows */
+.topts { margin-top:8px; display:flex; flex-direction:column; gap:8px; }
+.topt { background:var(--cream); border-radius:8px; padding:10px 14px; }
+.topt-label { font-size:9px; font-weight:500; letter-spacing:.15em; text-transform:uppercase; margin-bottom:4px; }
+#thu .topt-label { color:var(--c1); }
+#fri .topt-label { color:var(--c2); }
+#sat .topt-label { color:var(--c3); }
+#sun .topt-label { color:var(--c4); }
+.topt-name { font-family:'DM Serif Display', serif; font-size:14px; font-weight:400; margin-bottom:2px; }
+.topt-det { font-size:11px; color:var(--gray); }
+.topt-foot { display:flex; align-items:center; gap:10px; margin-top:6px; flex-wrap:wrap; }
+
+/* shops list */
+.shops { display:flex; flex-direction:column; gap:5px; margin-top:6px; }
+.shops a { font-size:11px; font-weight:600; color:var(--dark); text-decoration:none; display:inline-flex; align-items:center; gap:5px; }
+.shops a:hover { text-decoration:underline; }
+.shops a small { font-size:9px; color:var(--gray); }
+
+/* FOOTER */
+footer { background:var(--cream); border-top:2px solid var(--light); padding:48px; text-align:center; }
+footer .fe { font-size:36px; display:block; margin-bottom:12px; }
+footer .ft { font-family:'DM Serif Display', serif; font-size:clamp(22px,3.5vw,40px); font-weight:400; margin-bottom:6px; }
+footer .ft span { color:var(--c1); }
+footer .fs { font-size:11px; color:var(--gray); letter-spacing:.08em; }
+
+/* PIN */
+.pin { flex-shrink:0; }
+
+@media(max-width:640px) {
+  .hero, .day-header, .timeline, .legend { padding-left:20px; padding-right:20px; }
+  .timeline::before { left:52px; }
+  .trow { grid-template-columns:52px 1fr; }
+  .trow::before { left:44px; }
+  .ttime { font-size:9px; padding-right:14px; }
+  .tcontent { padding-left:20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Welcome to<br>Austin!</h1>
+  <p class="sub">Keep Austin Weird.</p>
+  <p style="font-size:13px;color:var(--gray);letter-spacing:.08em;font-weight:600;">Thursday April 9th — Sunday April 12th</p>
+</section>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#thu"><span class="num">Day 01</span><span class="name">Thursday</span></a>
+  <a href="#fri"><span class="num">Day 02</span><span class="name">Friday</span></a>
+  <a href="#sat"><span class="num">Day 03</span><span class="name">Saturday</span></a>
+  <a href="#sun"><span class="num">Day 04</span><span class="name">Sunday</span></a>
+</nav>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="tag tag-r">Reserved</span>
+  <span class="tag tag-c">Purchased ✓</span>
+  <span class="tag tag-t">Tentative</span>
+</div>
+
+
+<!-- ═══════════════════════ THURSDAY ═══════════════════════ -->
+<section class="day" id="thu">
+  <div class="day-header">
+    <p class="day-label">Day 01 — Thursday</p>
+    <h2>Arrival &amp; <em>First Bites</em></h2>
+  </div>
+  <div class="timeline">
+
+    <!-- 12 pm food options -->
+    <div class="trow">
+      <div class="ttime">12 pm</div>
+      <div class="tcontent">
+        <p class="tname">Lunch — Pick one</p>
+        <div class="topts">
+          <div class="topt">
+            <p class="topt-label">Option A</p>
+            <p class="topt-name">La Santa Barbacha</p>
+            <p class="topt-det">1214 W 6th St, Ste 100 · Closes 3 pm · Michelin Bib Gourmand</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/Desnudo+Coffee+1214+W+6th+St+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="2" data-c="#E8602A"></span>
+            </div>
+          </div>
+          <div class="topt">
+            <p class="topt-label">Option B</p>
+            <p class="topt-name">Mercado Sin Nombre</p>
+            <p class="topt-det">408 N Pleasant Valley · Closes 2 pm · Cash only</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/Mercado+Sin+Nombre+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="2" data-c="#E8602A"></span>
+            </div>
+          </div>
+          <div class="topt">
+            <p class="topt-label">Option C</p>
+            <p class="topt-name">Tacos D/10</p>
+            <p class="topt-det">206 Trinity St · Opens 11:30 am · Taco speakeasy, enter through the alley</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/Tacos+D10+206+Trinity+St+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="2" data-c="#E8602A"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desnudo -->
+    <div class="trow">
+      <div class="ttime">Afternoon</div>
+      <div class="tcontent">
+        <p class="tname">Desnudo Coffee</p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>1214 W 6th St #110</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Desnudo+Coffee+1214+W+6th+St+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="2" data-c="#E8602A"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Westside -->
+    <div class="trow">
+      <div class="ttime">Afternoon</div>
+      <div class="tcontent">
+        <p class="tname">Westside Market <span class="tag tag-t" style="font-size:8px;vertical-align:middle;">Tentative</span></p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>1214 W 6th St — same building as Desnudo</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Westside+Market+1214+W+6th+St+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="2" data-c="#E8602A"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Target -->
+    <div class="trow">
+      <div class="ttime">Afternoon</div>
+      <div class="tcontent">
+        <p class="tname">Target</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Target+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="2" data-c="#E8602A"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cavalier -->
+    <div class="trow">
+      <div class="ttime">Night</div>
+      <div class="tcontent">
+        <p class="tname">The Cavalier — Wings &amp; Drinks</p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>2400 Webberville Rd · East Austin · American Bar &amp; Grill · Closes 12 am</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/The+Cavalier+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="3" data-c="#E8602A"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ FRIDAY ═══════════════════════ -->
+<section class="day" id="fri">
+  <div class="day-header">
+    <p class="day-label">Day 02 — Friday</p>
+    <h2><em>SoCo</em> Day</h2>
+  </div>
+  <div class="timeline">
+
+    <!-- Lady Bird -->
+    <div class="trow">
+      <div class="ttime">7–9 am</div>
+      <div class="tcontent">
+        <p class="tname">Lady Bird Lake Trail — Run</p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>S Lakeshore Blvd, Austin</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Lady+Bird+Lake+Trail+Austin" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="2" data-c="#0FA88F"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Breakfast taco -->
+    <div class="trow">
+      <div class="ttime">9–10 am</div>
+      <div class="tcontent">
+        <p class="tname">Café + Breakfast Taco — Pick one</p>
+        <div class="topts">
+          <div class="topt">
+            <p class="topt-label">Option A</p>
+            <p class="topt-name">Noble Joe Co.</p>
+            <p class="topt-det">Southshore · Near Lady Bird Lake · Coffee &amp; breakfast tacos</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/Noble+Joe+Coffee+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="2" data-c="#0FA88F"></span>
+            </div>
+          </div>
+          <div class="topt">
+            <p class="topt-label">Option B</p>
+            <p class="topt-name">Mozart's Coffee Roasters</p>
+            <p class="topt-det">3825 Lake Austin Blvd · Lakeside patio · Opens 7 am</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/Mozarts+Coffee+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="2" data-c="#0FA88F"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- East 11th shops -->
+    <div class="trow">
+      <div class="ttime">11 am+</div>
+      <div class="tcontent">
+        <p class="tname">East 11th Street — Shopping</p>
+        <div class="shops">
+          <a href="https://www.google.com/maps/search/Lovecraft+Bar+Austin+TX" target="_blank">Lovecraft <small>→ Maps</small></a>
+          <a href="https://www.google.com/maps/search/Kindred+Spirits+Austin+TX" target="_blank">Kindred Spirits <small>→ Maps</small></a>
+          <a href="https://www.google.com/maps/search/Apartment+F+Austin+TX" target="_blank">Apartment F <small>→ Maps</small></a>
+          <a href="https://www.google.com/maps/search/Take+Heart+Austin+TX" target="_blank">Take Heart <small>→ Maps</small></a>
+          <a href="https://www.google.com/maps/search/Pecos+Jane+Austin+TX" target="_blank">Pecos &amp; Jane <small>→ Maps</small></a>
+        </div>
+        <div class="tmeta" style="margin-top:8px;">
+          <span class="pax" data-n="2" data-c="#0FA88F"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paperboy -->
+    <div class="trow">
+      <div class="ttime">1:15 pm</div>
+      <div class="tcontent">
+        <p class="tname">Paperboy East <span class="tag tag-r" style="font-size:8px;vertical-align:middle;">Reserved</span></p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>1203 E 11th St · American Brunch · Closes 3 pm</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Paperboy+East+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="2" data-c="#0FA88F"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- South Congress -->
+    <div class="trow">
+      <div class="ttime">Afternoon</div>
+      <div class="tcontent">
+        <p class="tname">South Congress Ave — Shopping &amp; Walk</p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>S Congress Ave, Austin TX</p>
+        <p class="tnote">Allen's Boots · "I love you so much" mural · boutiques</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/South+Congress+Avenue+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="2" data-c="#0FA88F"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Odd Duck -->
+    <div class="trow">
+      <div class="ttime">9 pm</div>
+      <div class="tcontent">
+        <p class="tname">Odd Duck <span class="tag tag-r" style="font-size:8px;vertical-align:middle;">Reserved</span></p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>1201 S Lamar Blvd · American Farm-to-Table · Closes 9 pm · Michelin Guide ⭐</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Odd+Duck+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="3" data-c="#0FA88F"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ SATURDAY ═══════════════════════ -->
+<section class="day" id="sat">
+  <div class="day-header">
+    <p class="day-label">Day 03 — Saturday</p>
+    <h2>BBQ, <em>Barre</em> &amp; Dancing</h2>
+  </div>
+  <div class="timeline">
+
+    <!-- Barre -->
+    <div class="trow">
+      <div class="ttime">Morning</div>
+      <div class="tcontent">
+        <p class="tname">Barre Class</p>
+        <div class="tmeta">
+          <span class="pax" data-n="2" data-c="#E84470"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Veracruz -->
+    <div class="trow">
+      <div class="ttime">Post-class</div>
+      <div class="tcontent">
+        <p class="tname">Veracruz All Natural</p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>Mueller neighborhood, Austin · Mexican · Michelin Bib Gourmand</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/1905+Aldrich+St+125+Austin+TX+78723" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="2" data-c="#E84470"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- South Lamar -->
+    <div class="trow">
+      <div class="ttime">Afternoon</div>
+      <div class="tcontent">
+        <p class="tname">South Lamar / East Side <span class="tag tag-t" style="font-size:8px;vertical-align:middle;">Tentative</span></p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/South+Lamar+Blvd+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="2" data-c="#E84470"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BBQ options -->
+    <div class="trow">
+      <div class="ttime">5 pm</div>
+      <div class="tcontent">
+        <p class="tname">BBQ — Pick one</p>
+        <div class="topts">
+          <div class="topt">
+            <p class="topt-label">Option A</p>
+            <p class="topt-name">La Barbecue</p>
+            <p class="topt-det">2027 E Cesar Chavez St · Texas BBQ · Closes 9 pm · Michelin Guide ⭐</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/La+Barbecue+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="4" data-c="#E84470"></span>
+            </div>
+          </div>
+          <div class="topt">
+            <p class="topt-label">Option B</p>
+            <p class="topt-name">Terry Black's BBQ</p>
+            <p class="topt-det">1003 Barton Springs Rd · Texas BBQ · Closes 10 pm · Walk-in friendly</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/Terry+Blacks+BBQ+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="4" data-c="#E84470"></span>
+            </div>
+          </div>
+          <div class="topt">
+            <p class="topt-label">Option C</p>
+            <p class="topt-name">LeRoy &amp; Lewis</p>
+            <p class="topt-det">5621 Emerald Forest Dr · New School BBQ · Closes 9 pm · Creative sides · Michelin Guide ⭐</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/LeRoy+Lewis+BBQ+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="4" data-c="#E84470"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dance hall -->
+    <div class="trow">
+      <div class="ttime">Night</div>
+      <div class="tcontent">
+        <p class="tname">Dance Hall — Pick one</p>
+        <div class="topts">
+          <div class="topt">
+            <p class="topt-label">Option A · Legendary</p>
+            <p class="topt-name">Broken Spoke</p>
+            <p class="topt-det">3201 S Lamar Blvd · $20 cash · Two-step lessons Sat 8 pm</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/Broken+Spoke+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="5" data-c="#E84470"></span>
+            </div>
+          </div>
+          <div class="topt">
+            <p class="topt-label">Option B · Livelier</p>
+            <p class="topt-name">White Horse</p>
+            <p class="topt-det">500 Comal St · East Austin · Live music every night</p>
+            <div class="topt-foot">
+              <a href="https://www.google.com/maps/search/White+Horse+Austin+TX" target="_blank" class="tmap">Maps →</a>
+              <span class="pax" data-n="5" data-c="#E84470"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bar hopping -->
+    <div class="trow">
+      <div class="ttime">Late Night</div>
+      <div class="tcontent">
+        <p class="tname">Bar Hopping — East 6th</p>
+        <p class="tnote">Whisler's · Nickel City · Ah Sing Den</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Whislers+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="5" data-c="#E84470"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════ SUNDAY ═══════════════════════ -->
+<section class="day" id="sun">
+  <div class="day-header">
+    <p class="day-label">Day 04 — Sunday</p>
+    <h2>Market, <em>Oysters</em> &amp; Goodbye</h2>
+  </div>
+  <div class="timeline">
+
+    <!-- Mueller -->
+    <div class="trow">
+      <div class="ttime">9–11 am</div>
+      <div class="tcontent">
+        <p class="tname">Mueller Farmers' Market</p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>2006 Philomena St · Sundays only</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Mueller+Farmers+Market+Austin" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="3" data-c="#3D2FA0"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Range -->
+    <div class="trow">
+      <div class="ttime">12–1 pm</div>
+      <div class="tcontent">
+        <p class="tname">The Range Austin <span class="tag tag-c" style="font-size:8px;vertical-align:middle;">Purchased ✓</span></p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>8301 S I-35 Frontage Rd</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/The+Range+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="5" data-c="#3D2FA0"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Oysters -->
+    <div class="trow">
+      <div class="ttime">1:30 pm</div>
+      <div class="tcontent">
+        <p class="tname">Skipjack Oyster Bar <span class="tag tag-r" style="font-size:8px;vertical-align:middle;">Reserved</span></p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>East 5th St, Austin TX · Seafood · Closes 3 pm</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Skipjack+Oyster+Bar+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="5" data-c="#3D2FA0"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitol -->
+    <div class="trow">
+      <div class="ttime">After 3 pm</div>
+      <div class="tcontent">
+        <p class="tname">Capitol &amp; Downtown <span class="tag tag-t" style="font-size:8px;vertical-align:middle;">Tentative</span></p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>1100 Congress Ave · Free entry</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Texas+State+Capitol+Austin" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="5" data-c="#3D2FA0"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rainy -->
+    <div class="trow">
+      <div class="ttime">After 3 pm</div>
+      <div class="tcontent">
+        <p class="tname">Rainy Street <span class="tag tag-t" style="font-size:8px;vertical-align:middle;">Tentative</span></p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>Rainey St, Austin TX</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Rainey+Street+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="5" data-c="#3D2FA0"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nido -->
+    <div class="trow">
+      <div class="ttime">7 pm</div>
+      <div class="tcontent">
+        <p class="tname">Nido <span class="tag tag-r" style="font-size:8px;vertical-align:middle;">Reserved</span></p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>1211 W Riverside Dr · Loren Hotel Rooftop · American / Italian · Closes 10 pm</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Nido+Loren+Hotel+Austin+TX" target="_blank" class="tmap">Maps →</a>
+          <span class="pax" data-n="3" data-c="#3D2FA0"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="day" id="notes" style="padding-bottom:60px;border-bottom:none;">
+  <div class="day-header">
+    <p class="day-label" style="color:var(--gray);">Notes</p>
+    <h2 style="font-size:clamp(22px,3vw,36px);">If it rains ☁️</h2>
+  </div>
+  <div class="timeline">
+
+    <div class="trow">
+      <div class="ttime">Option A</div>
+      <div class="tcontent">
+        <p class="tname">Blanton Museum of Art</p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>200 E Martin Luther King Jr Blvd · UT Campus · Incredible Latin American art collection</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Blanton+Museum+of+Art+Austin+TX" target="_blank" class="tmap">Maps →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="trow">
+      <div class="ttime">Option B</div>
+      <div class="tcontent">
+        <p class="tname">Pinballz Arcade</p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>Austin TX · Huge arcade bar · Perfect for groups</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Pinballz+Arcade+Austin+TX" target="_blank" class="tmap">Maps →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="trow">
+      <div class="ttime">Option C</div>
+      <div class="tcontent">
+        <p class="tname">Topgolf</p>
+        <p class="taddr"><svg class="pin" width="10" height="13" viewBox="0 0 10 13" fill="none"><path d="M5 0C2.24 0 0 2.24 0 5c0 3.75 5 8 5 8s5-4.25 5-8C10 2.24 7.76 0 5 0zm0 6.5C4.17 6.5 3.5 5.83 3.5 5S4.17 3.5 5 3.5 6.5 4.17 6.5 5 5.83 6.5 5 6.5z" fill="#7A7670"/></svg>Austin TX · Covered bays · Food, drinks &amp; golf · No experience needed</p>
+        <div class="tmeta">
+          <a href="https://www.google.com/maps/search/Topgolf+Austin+TX" target="_blank" class="tmap">Maps →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<footer>
+  <p class="ft">Happy to see you!</p>
+  <p class="fs">Austin, TX · April 9–12</p>
+  <p style="margin-top:20px;font-size:12px;color:var(--gray);letter-spacing:.06em;text-align:center;font-style:italic;">with love,<br>Nicol Sau</p>
+</footer>
+
+<script>
+function makeFigures(n, c) {
+  let h = '';
+  for (let i = 0; i < n; i++) {
+    h += `<svg width="11" height="20" viewBox="0 0 12 22" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="6" cy="3" r="2.5" fill="${c}"/>
+      <line x1="6" y1="6" x2="6" y2="14" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="6" y1="9" x2="1.5" y2="12.5" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="6" y1="9" x2="10.5" y2="12.5" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="6" y1="14" x2="2.5" y2="21" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="6" y1="14" x2="9.5" y2="21" stroke="${c}" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>`;
+  }
+  return h;
+}
+document.querySelectorAll('.pax[data-n]').forEach(el => {
+  el.innerHTML = makeFigures(parseInt(el.dataset.n), el.dataset.c);
+  el.style.cssText = 'display:inline-flex;align-items:flex-end;gap:1px;';
+});
+</script>
+</body>
+</html>
